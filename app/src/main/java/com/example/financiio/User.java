@@ -2,6 +2,7 @@ package com.example.financiio;
 
 public class User {
 
+
     public String fullName, email;
 
     public User() {

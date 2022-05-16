@@ -3,7 +3,9 @@ package com.example.financiio;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -20,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private TextView register;
+    private TextView register, forgotPassword;
     private EditText  editTextEmail, editTextPassword;
     private Button signIn;
 
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(this);
+
+        forgotPassword = (TextView) findViewById(R.id.forgotPassword);
+        forgotPassword.setOnClickListener(this);
 
         signIn = (Button) findViewById(R.id.signIn);
         signIn.setOnClickListener(this);
@@ -55,6 +60,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.signIn:
                 userLogin();
+                break;
+
+            case R.id.forgotPassword:
+                startActivity(new Intent(this, ForgotPassword.class));
                 break;
         }
     }
@@ -102,6 +111,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
     }
-
-
 }
