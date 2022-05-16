@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/vin/android/khoa/app/src/main/res/layout/activity_chart.xml" value="0.1" />
+        <entry key="..\:/vin/android/khoa/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/vin/android/khoa/app/src/main/res/layout/activity_profile.xml" value="0.12386018237082067" />
+        <entry key="..\:/vin/android/khoa/app/src/main/res/layout/activity_register_user.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/activity_register_user.xml" value="0.265625" />
