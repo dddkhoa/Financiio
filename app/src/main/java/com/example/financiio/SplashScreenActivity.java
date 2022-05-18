@@ -14,7 +14,7 @@ import java.lang.Runnable;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private static int SPLASH = 2000;
+    private static int SPLASH = 1000;
     Animation animation;
     private ImageView logo;
     private TextView banner, bannerDescription;

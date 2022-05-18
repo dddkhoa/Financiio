@@ -9,6 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Financiio">
         <activity
+            android:name=".SelectCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".InputActivity"
             android:exported="false" />
         <activity

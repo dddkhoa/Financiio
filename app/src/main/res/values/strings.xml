@@ -3,4 +3,26 @@
     <string name="app_name">Financiio</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="categories">
+
+        <item>Food &amp; Beverage</item>
+        <item>Transportation</item>
+        <item>Rentals</item>
+        <item>Water Bill</item>
+        <item>Electricity Bill</item>
+        <item>Internet Bill</item>
+        <item>Salary</item>
+        <item>Others</item>
+        <item>Health</item>
+<!--        -->
+        <item>Ronaldo</item>
+        <item>Neymar</item>
+        <item>Messi</item>
+        <item>Nani</item>
+        <item>Kaka</item>
+
+
+    </string-array>
+
 </resources>
