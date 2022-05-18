@@ -32,7 +32,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.*;
 
-public class ChartDisplay extends AppCompatActivity{
+public class ChartDisplay extends AppCompatActivity {
     private PieChart pieChart;
 
     @Override

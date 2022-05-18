@@ -3,9 +3,7 @@ package com.example.financiio;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -34,6 +32,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+            finish();
+        }
+
         register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(this);
 
@@ -48,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        mAuth = FirebaseAuth.getInstance();
+
+
     }
 
     @Override
@@ -103,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Redirect to user profile
-                            startActivity(new Intent(MainActivity.this, ChartDisplay.class));
+                            startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                            finish();
                         } else {
                             Toast.makeText(MainActivity.this,"Login unsuccessful: " + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
