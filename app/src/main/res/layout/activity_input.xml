@@ -6,5 +6,147 @@
     android:layout_height="match_parent"
     tools:context=".InputActivity">
 
+    <LinearLayout
+        android:id="@+id/horizontalBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.15"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+
+        <TextView
+            android:id="@+id/addTransactionText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add transaction"
+            android:textSize="25sp"
+            android:layout_marginStart="20dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/saveText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="0.5"
+            android:text="SAVE"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/numberInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="150dp"
+        android:ems="10"
+        android:hint="0 VND"
+        android:inputType="number"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/horizontalBar" />
+
+
+    <TextView
+        android:id="@+id/categoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="9"
+        android:hint="Select category"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/categoryImage"
+        app:layout_constraintTop_toBottomOf="@+id/numberInput" />
+
+    <View
+        android:id="@+id/horizontalLine1"
+        android:layout_width="400dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:background="#c0c0c0"
+        app:layout_constraintStart_toEndOf="@+id/categoryImage"
+        app:layout_constraintTop_toBottomOf="@+id/categoryName" />
+
+    <ImageView
+        android:id="@+id/categoryImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberInput"
+        app:srcCompat="@drawable/ic_baseline_category_24" />
+
+    <EditText
+        android:id="@+id/noteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Write note"
+        android:inputType="text"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/noteImage"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalLine1" />
+
+    <ImageView
+        android:id="@+id/noteImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryImage"
+        app:srcCompat="@drawable/ic_baseline_notes_24" />
+
+    <ImageView
+        android:id="@+id/dateImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noteImage"
+        app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
+
+    <TextView
+        android:id="@+id/datePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="9"
+        android:hint="Select date"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.275"
+        app:layout_constraintStart_toEndOf="@+id/dateImage"
+        app:layout_constraintTop_toBottomOf="@+id/noteText" />
+
+    <View
+        android:id="@+id/horizontalLine2"
+        android:layout_width="400dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:background="#c0c0c0"
+        app:layout_constraintStart_toEndOf="@+id/dateImage"
+        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

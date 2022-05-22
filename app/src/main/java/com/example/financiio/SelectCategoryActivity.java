@@ -1,22 +1,25 @@
 package com.example.financiio;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class SelectCategoryActivity extends AppCompatActivity implements CategoryRecyclerViewInterface {
 
     ArrayList<CategoryModel> categoryModels = new ArrayList<>();
-    int[] categoryImages = {R.drawable.beverage, R.drawable.electricity, R.drawable.health, R.drawable.house,
+    public int[] categoryImages = {R.drawable.beverage, R.drawable.electricity, R.drawable.health, R.drawable.house,
             R.drawable.internet, R.drawable.other, R.drawable.salary,
     R.drawable.transportation, R.drawable.water, R.drawable.water, R.drawable.water, R.drawable.water,
     R.drawable.water, R.drawable.water};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,10 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(SelectCategoryActivity.this, InputActivity.class);
+        CategoryModel currentCategory = categoryModels.get(position);
+        intent.putExtra("Category", currentCategory.getCategoryName());
+        intent.putExtra("Image", position);
         startActivity(intent);
     }
+
 }
