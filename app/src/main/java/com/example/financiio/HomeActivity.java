@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -30,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.home:
                     replaceFragment(new HomeFragment());
                     break;
-                case R.id.account:
+                case R.id.budget:
                     replaceFragment(new BudgetFragment());
                     break;
                 case R.id.transactions:
@@ -43,14 +44,11 @@ public class HomeActivity extends AppCompatActivity {
         inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addItem();
+                startActivity(new Intent(HomeActivity.this, InputActivity.class));
             }
         });
     }
 
-    private void addItem() {
-
-    }
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();

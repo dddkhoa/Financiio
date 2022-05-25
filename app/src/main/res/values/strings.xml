@@ -1,27 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Financiio</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="categories">
-
+        <item>Salary</item>
+        <item>Other Income</item>
         <item>Food &amp; Beverage</item>
         <item>Transportation</item>
         <item>Rentals</item>
         <item>Water Bill</item>
         <item>Electricity Bill</item>
         <item>Internet Bill</item>
-        <item>Salary</item>
-        <item>Others</item>
-        <item>Health</item>
-<!--        -->
-        <item>Ronaldo</item>
-        <item>Neymar</item>
-        <item>Messi</item>
-        <item>Nani</item>
-        <item>Kaka</item>
+        <item>Accessories</item>
+        <item>Other Spending</item>
+        <item>Healthcare Bill</item>
+        <item>Pets Bill</item>
+        <item>Netflix Bill</item>
+        <item>Spotify Bill</item>
+    </string-array>
 
+
+    <string-array name="notes">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>M</item>
+        <item>N</item>
+    </string-array>
+
+
+    <string-array name="dates">
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
+        <item>May 22, 2022</item>
 
     </string-array>
 

@@ -13,8 +13,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class InputActivity extends AppCompatActivity {
 
@@ -36,6 +42,10 @@ public class InputActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     Input userInput;
 
+    DatabaseReference inputRef;
+    FirebaseAuth mAuth;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +53,11 @@ public class InputActivity extends AppCompatActivity {
         editor = sharedPreferences.edit();
         setContentView(R.layout.activity_input);
 
-        numberInput = (EditText) findViewById(R.id.numberInput);
+        mAuth = FirebaseAuth.getInstance();
+        inputRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+
+
+        numberInput = (EditText) findViewById(R.id.moneyInput);
         categoryName =  (TextView) findViewById(R.id.categoryName);
         categoryImage = (ImageView) findViewById(R.id.categoryImage);
         noteText = (EditText) findViewById(R.id.noteText);
@@ -80,22 +94,48 @@ public class InputActivity extends AppCompatActivity {
         saveInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String stringMoneyInput = numberInput.getText().toString();
-                String note = noteText.getText().toString();
-                String date = datePicker.getText().toString();
-                String category = categoryName.getText().toString();
+                if (numberInput.getText() != null && categoryName.getText() != null & datePicker.getText() != null) {
+                    String stringMoneyInput = numberInput.getText().toString();
+                    String date = datePicker.getText().toString();
+                    String category = categoryName.getText().toString();
 
-                if (stringMoneyInput.length() > 0 && category.length() > 0 && date.length() > 0) {
-                    double moneyInput = Double.parseDouble(stringMoneyInput);
-                    if (note.length() > 0) {
-                        userInput = new Input(moneyInput, category, note, date);
+                    if (stringMoneyInput.length() > 0 && category.length() > 0 && date.length() > 0) {
+                        double moneyInput = Double.parseDouble(stringMoneyInput);
+                        if (noteText.getText() != null) {
+                            String note = noteText.getText().toString();
+                            userInput = new Input(moneyInput, category, note, date);
+                        } else {
+                            userInput = new Input(moneyInput, category, null, date);
+                        }
+
+                        // Push User Input to Database
+                        String id = inputRef.push().getKey();
+                        inputRef.child(id).setValue(userInput).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    startActivity(new Intent(InputActivity.this, HomeActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(InputActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
                     } else {
-                        userInput = new Input(moneyInput, category, date);
+                        alert("You must select amount of spending/earning, its category, and a date.");
                     }
                 } else {
                     alert("You must select amount of spending/earning, its category, and a date.");
                 }
-                startActivity(new Intent(InputActivity.this, TransactionsFragment.class));
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(InputActivity.this, HomeActivity.class));
+                finish();
             }
         });
     }
