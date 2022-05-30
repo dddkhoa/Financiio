@@ -83,7 +83,7 @@ public class InputActivity extends AppCompatActivity {
         String currentCategoryName = intent.getStringExtra("Category");
         categoryName.setText(currentCategoryName);
         if (currentCategoryName != null) {
-            if (currentCategoryName.equals("Salary") | currentCategoryName.equals("Other Income")) {
+            if (currentCategoryName.equals("Salary") | currentCategoryName.equals("Other Income") | currentCategoryName.equals("Saving")) {
                 numberInput.setTextColor(getResources().getColor(R.color.GREEN));
             } else {
                 numberInput.setTextColor(getResources().getColor(R.color.RED));

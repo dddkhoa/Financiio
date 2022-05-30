@@ -31,20 +31,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.Locale;
 
 public class TransactionsFragment extends Fragment {
-    public int[] categoryImages = {R.drawable.ic_salary,  R.drawable.ic_saving, R.drawable.ic_other_income, R.drawable.ic_accessory,
+    public int[] categoryImages = {R.drawable.ic_salary, R.drawable.ic_saving, R.drawable.ic_other_income, R.drawable.ic_accessory,
             R.drawable.ic_book, R.drawable.ic_transport, R.drawable.ic_clothes, R.drawable.ic_drink, R.drawable.ic_computer,
             R.drawable.ic_cosmetic, R.drawable.ic_electric, R.drawable.ic_entertainmmment,
             R.drawable.ic_fitness, R.drawable.ic_food, R.drawable.ic_fuel, R.drawable.ic_gift, R.drawable.ic_grocery,
             R.drawable.ic_laundry, R.drawable.ic_loan, R.drawable.ic_medical,
-            R.drawable.ic_phone,  R.drawable.ic_rental,
-            R.drawable.ic_shopping, R.drawable.ic_water,R.drawable.ic_other};
+            R.drawable.ic_phone, R.drawable.ic_rental,
+            R.drawable.ic_shopping, R.drawable.ic_water, R.drawable.ic_other};
+
     FirebaseDatabase database;
-    DatabaseReference inputRef, moneyRef, userRef;
+    DatabaseReference inputRef, moneyRef;
     FirebaseAuth mAuth;
+    ValueEventListener listener;
 
     RecyclerView transactionsRecyclerView;
     FirebaseRecyclerAdapter<Input, MyViewHolder> adapter;
@@ -75,20 +79,7 @@ public class TransactionsFragment extends Fragment {
         moneyRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("wallet");
         inputRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Transactions");
 
-//        moneyRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Log.d("FIX", "Inside Single");
-//                TransactionsFragment.walletTotal = snapshot.getValue(Double.class);
-//                moneyRef.removeEventListener(this);
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//            }
-//        });
-
         TextView walletTotalText = rootView.findViewById(R.id.balanceAmount);
-        walletTotalText.setText(String.format(Locale.getDefault(), "%,.1f", TransactionsFragment.walletTotal) + " VND");
         transactionsRecyclerView = rootView.findViewById(R.id.transactions_recycler_view);
         transactionsRecyclerView.setHasFixedSize(true);
         transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -223,56 +214,29 @@ public class TransactionsFragment extends Fragment {
         adapter.startListening();
         adapter.notifyDataSetChanged();
 
-        inputRef.addChildEventListener(new ChildEventListener() {
+        listener = new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Input input = snapshot.getValue(Input.class);
-                Log.d("FIX", "in Add");
-                if (input.getCategoryName().equals("Salary") | input.getCategoryName().equals("Saving") | input.getCategoryName().equals("Other Income")) {
-                    TransactionsFragment.walletTotal += input.getMoneyInput();
-                } else {
-                    TransactionsFragment.walletTotal -= input.getMoneyInput();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                TransactionsFragment.walletTotal = 0;
+                for (DataSnapshot snap: snapshot.getChildren()) {
+                    Input input = snap.getValue(Input.class);
+                    if (input.getCategoryName().equals("Salary") | input.getCategoryName().equals("Saving") | input.getCategoryName().equals("Other Income")) {
+                        TransactionsFragment.walletTotal += input.getMoneyInput();
+                    } else {
+                        TransactionsFragment.walletTotal -= input.getMoneyInput();
+                    }
                 }
                 walletTotalText.setText(String.format(Locale.getDefault(), "%,.1f", TransactionsFragment.walletTotal) + " VND");
                 moneyRef.setValue(TransactionsFragment.walletTotal);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Input input = snapshot.getValue(Input.class);
-                Log.d("FIX", "in Change");
-                if (input.getCategoryName().equals("Salary") | input.getCategoryName().equals("Saving") | input.getCategoryName().equals("Other Income")) {
-                    TransactionsFragment.walletTotal += input.getMoneyInput();
-                } else {
-                    TransactionsFragment.walletTotal -= input.getMoneyInput();
-                }
-                walletTotalText.setText(String.format(Locale.getDefault(), "%,.1f", TransactionsFragment.walletTotal) + " VND");
-                moneyRef.setValue(TransactionsFragment.walletTotal);            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                Input input = snapshot.getValue(Input.class);
-                Log.d("FIX", "in Remove");
-                if (input.getCategoryName().equals("Salary") | input.getCategoryName().equals("Saving") | input.getCategoryName().equals("Other Income")) {
-                    TransactionsFragment.walletTotal -= input.getMoneyInput();
-                } else {
-                    TransactionsFragment.walletTotal += input.getMoneyInput();
-                }
-                walletTotalText.setText(String.format(Locale.getDefault(), "%,.1f", TransactionsFragment.walletTotal) + " VND");
-                moneyRef.setValue(TransactionsFragment.walletTotal);
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
 
+        inputRef.addValueEventListener(listener);
         return rootView;
     }
 
@@ -322,7 +286,7 @@ public class TransactionsFragment extends Fragment {
 
         public void setMoneyInput(double money) {
             TextView newMoneyInput = itemView.findViewById(R.id.moneyInput);
-            newMoneyInput.setText(String.format(Locale.getDefault(),"%,.1f", money) + " VND");
+            newMoneyInput.setText(String.format(Locale.getDefault(), "%,.1f", money) + " VND");
         }
     }
 
