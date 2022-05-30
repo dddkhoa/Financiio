@@ -10,6 +10,10 @@
         android:id="@+id/transactions"/>
 
     <item android:title="Budget"
-        android:icon="@drawable/ic_baseline_person_24"
+        android:icon="@drawable/budget"
         android:id="@+id/budget"/>
+
+    <item android:title="Profille"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:id="@+id/profile"/>
 </menu>

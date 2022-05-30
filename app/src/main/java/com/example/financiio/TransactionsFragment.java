@@ -84,7 +84,7 @@ public class TransactionsFragment extends Fragment {
         transactionsRecyclerView.setHasFixedSize(true);
         transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        Query query = inputRef.orderByChild("date");
+        Query query = inputRef.orderByChild("invertedDateInMilliseconds");
 
         FirebaseRecyclerOptions<Input> options = new FirebaseRecyclerOptions.Builder<Input>()
                 .setQuery(query, Input.class)
@@ -237,6 +237,7 @@ public class TransactionsFragment extends Fragment {
         };
 
         inputRef.addValueEventListener(listener);
+
         return rootView;
     }
 

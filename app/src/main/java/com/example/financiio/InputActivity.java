@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,9 +19,15 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class InputActivity extends AppCompatActivity {
 
@@ -91,7 +98,7 @@ public class InputActivity extends AppCompatActivity {
         }
         categoryImage.setImageResource(categoryImages[intent.getIntExtra("Image", categoryImages.length - 1)]);
 
-        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
         final MaterialDatePicker materialDatePicker = builder.build();
 
         datePicker.setOnClickListener(new View.OnClickListener() {
@@ -101,23 +108,46 @@ public class InputActivity extends AppCompatActivity {
             }
         });
 
-        materialDatePicker.addOnPositiveButtonClickListener(selection -> datePicker.setText(materialDatePicker.getHeaderText()));
+//        materialDatePicker.addOnPositiveButtonClickListener(selection -> datePicker.setText(materialDatePicker.getHeaderText()));
 
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+                try {
+                    Date selectedDate = format.parse(materialDatePicker.getHeaderText());
+                    format = new SimpleDateFormat("dd-MM-yyyy");
+                    String formatted = format.format(selectedDate);
+                    datePicker.setText(formatted);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         saveInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (numberInput.getText() != null && categoryName.getText() != null & datePicker.getText() != null) {
                     String stringMoneyInput = numberInput.getText().toString();
                     String date = datePicker.getText().toString();
+                    String[] tempDate = date.split("-");
+                    int day = Integer.parseInt(tempDate[0]);
+                    int month = Integer.parseInt(tempDate[1]);
+                    int year = Integer.parseInt(tempDate[2]);
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.DAY_OF_MONTH, day);
+                    cal.set(Calendar.MONTH, month);
+                    cal.set(Calendar.YEAR, year);
+                    long dateInMilliseconds = cal.getTimeInMillis();
                     String category = categoryName.getText().toString();
 
                     if (stringMoneyInput.length() > 0 && category.length() > 0 && date.length() > 0) {
                         double moneyInput = Double.parseDouble(stringMoneyInput);
                         if (noteText.getText() != null) {
                             String note = noteText.getText().toString();
-                            userInput = new Input(moneyInput, category, note, date);
+                            userInput = new Input(moneyInput, category, note, date, day, month, year, dateInMilliseconds);
                         } else {
-                            userInput = new Input(moneyInput, category, null, date);
+                            userInput = new Input(moneyInput, category, null, date, day, month, year, dateInMilliseconds);
                         }
 
                         // Push User Input to Database

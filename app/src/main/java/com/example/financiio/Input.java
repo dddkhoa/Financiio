@@ -6,7 +6,8 @@ public class Input {
     private String inputID;
     private String noteText;
     private String date;
-    private int categoryImage;
+    private int categoryImage, day, month, year;
+    private long dateInMilliseconds, invertedDateInMilliseconds;
 
     public Input() {}
 
@@ -24,6 +25,18 @@ public class Input {
         this.categoryName = categoryName;
         this.noteText = noteText;
         this.date = date;
+    }
+
+    public Input(double moneyInput, String categoryName, String noteText, String date, int day, int month, int year, long dateInMilliseconds) {
+        this.moneyInput = moneyInput;
+        this.categoryName = categoryName;
+        this.noteText = noteText;
+        this.date = date;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.dateInMilliseconds = dateInMilliseconds;
+        this.invertedDateInMilliseconds = -1 * dateInMilliseconds;
     }
 
 
@@ -73,5 +86,45 @@ public class Input {
 
     public void setCategoryImage(int categoryImage) {
         this.categoryImage = categoryImage;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public long getDateInMilliseconds() {
+        return dateInMilliseconds;
+    }
+
+    public void setDateInMilliseconds(long dateInMilliseconds) {
+        this.dateInMilliseconds = dateInMilliseconds;
+    }
+
+    public long getInvertedDateInMilliseconds() {
+        return invertedDateInMilliseconds;
+    }
+
+    public void setInvertedDateInMilliseconds(long invertedDateInMilliseconds) {
+        this.invertedDateInMilliseconds = invertedDateInMilliseconds;
     }
 }

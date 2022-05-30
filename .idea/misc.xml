@@ -29,6 +29,7 @@
         <entry key="app/src/main/res/layout/fragment_account.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/fragment_budget.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.35572916666666665" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.3546875" />
         <entry key="app/src/main/res/layout/fragment_transactions.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/transaction_recycler_view_row.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/transactions_update.xml" value="0.3546875" />
