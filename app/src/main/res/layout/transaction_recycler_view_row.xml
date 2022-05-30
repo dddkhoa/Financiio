@@ -25,7 +25,7 @@
                 android:id="@+id/categoryImage"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/beverage"
+                android:src="@drawable/ic_accessory"
                 android:padding="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +38,7 @@
                 android:text="Food &amp; Beverage"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:layout_marginStart="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/categoryImage"
                 app:layout_constraintTop_toTopOf="parent"
@@ -49,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="Note"
                 android:textSize="18sp"
+                android:layout_marginStart="10dp"
                 app:layout_constraintTop_toBottomOf="@id/categoryName"
                 app:layout_constraintStart_toEndOf="@id/categoryImage"/>
 
@@ -58,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="May 22, 2022"
                 android:textSize="18sp"
+                android:layout_marginStart="10dp"
                 app:layout_constraintTop_toBottomOf="@id/noteText"
                 app:layout_constraintStart_toEndOf="@id/categoryImage"
                 />
@@ -67,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100, 000 VND"
-                android:textSize="25sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"

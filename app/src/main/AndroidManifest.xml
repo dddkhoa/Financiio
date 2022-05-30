@@ -13,9 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Financiio">
         <activity
-            android:name=".SmsActivity"
-            android:exported="true" />
-        <activity
             android:name=".SelectCategoryActivity"
             android:exported="true" />
         <activity

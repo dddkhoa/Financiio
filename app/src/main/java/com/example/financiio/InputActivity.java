@@ -33,15 +33,20 @@ public class InputActivity extends AppCompatActivity {
     public static final String NUMBER = "Number";
     public static final String DATE = "Date";
 
-    public int[] categoryImages = {R.drawable.beverage, R.drawable.electricity, R.drawable.health, R.drawable.house,
-            R.drawable.internet, R.drawable.other, R.drawable.salary,
-            R.drawable.transportation, R.drawable.water, R.drawable.water, R.drawable.water, R.drawable.water,
-            R.drawable.water, R.drawable.water};
+    public int[] categoryImages = {R.drawable.ic_salary,  R.drawable.ic_saving, R.drawable.ic_other_income, R.drawable.ic_accessory,
+            R.drawable.ic_book, R.drawable.ic_transport, R.drawable.ic_clothes, R.drawable.ic_drink, R.drawable.ic_computer,
+            R.drawable.ic_cosmetic, R.drawable.ic_electric, R.drawable.ic_entertainmmment,
+            R.drawable.ic_fitness, R.drawable.ic_food, R.drawable.ic_fuel, R.drawable.ic_gift, R.drawable.ic_grocery,
+            R.drawable.ic_laundry, R.drawable.ic_loan, R.drawable.ic_medical,
+            R.drawable.ic_phone,  R.drawable.ic_rental,
+            R.drawable.ic_shopping, R.drawable.ic_water,R.drawable.ic_other};
+
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Input userInput;
 
+    FirebaseDatabase database;
     DatabaseReference inputRef;
     FirebaseAuth mAuth;
 
@@ -54,8 +59,6 @@ public class InputActivity extends AppCompatActivity {
         setContentView(R.layout.activity_input);
 
         mAuth = FirebaseAuth.getInstance();
-        inputRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
-
 
         numberInput = (EditText) findViewById(R.id.moneyInput);
         categoryName =  (TextView) findViewById(R.id.categoryName);
@@ -75,6 +78,19 @@ public class InputActivity extends AppCompatActivity {
             }
         });
 
+
+        Intent intent = getIntent();
+        String currentCategoryName = intent.getStringExtra("Category");
+        categoryName.setText(currentCategoryName);
+        if (currentCategoryName != null) {
+            if (currentCategoryName.equals("Salary") | currentCategoryName.equals("Other Income")) {
+                numberInput.setTextColor(getResources().getColor(R.color.GREEN));
+            } else {
+                numberInput.setTextColor(getResources().getColor(R.color.RED));
+            }
+        }
+        categoryImage.setImageResource(categoryImages[intent.getIntExtra("Image", categoryImages.length - 1)]);
+
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         final MaterialDatePicker materialDatePicker = builder.build();
 
@@ -86,10 +102,6 @@ public class InputActivity extends AppCompatActivity {
         });
 
         materialDatePicker.addOnPositiveButtonClickListener(selection -> datePicker.setText(materialDatePicker.getHeaderText()));
-
-        Intent intent = getIntent();
-        categoryName.setText(intent.getStringExtra("Category"));
-        categoryImage.setImageResource(categoryImages[intent.getIntExtra("Image", 0)]);
 
         saveInput.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +121,8 @@ public class InputActivity extends AppCompatActivity {
                         }
 
                         // Push User Input to Database
+                        database = FirebaseDatabase.getInstance();
+                        inputRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Transactions");
                         String id = inputRef.push().getKey();
                         inputRef.child(id).setValue(userInput).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -175,6 +189,7 @@ public class InputActivity extends AppCompatActivity {
         super.onResume();
         sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+
         if (numberInput.getText() != null) {
             double moneyInput = getDouble(sharedPreferences, NUMBER, 0);
             numberInput.setText(Double.toString(moneyInput));
@@ -194,6 +209,19 @@ public class InputActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        editor.clear();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        editor.clear();
+        editor.commit();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         editor.clear();
         editor.commit();
     }
