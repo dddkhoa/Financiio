@@ -38,20 +38,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        category = (EditText) findViewById(R.id.cate);
-
-        title = (TextView) findViewById(R.id.textView);
-        title.setText(FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim());
-        inpt = (EditText) findViewById(R.id.input);
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String a = category.getText().toString().trim();
-                int b = Integer.valueOf(inpt.getText().toString().trim());
-                root.child(a).setValue(b);
-            }
-        });
 
 
     }

@@ -62,7 +62,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
                 @Override
                 public void onClick(View view) {
                     if (recyclerViewInterface != null) {
-                        int position = getAdapterPosition();
+                        int position = getAbsoluteAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             recyclerViewInterface.onItemClick(position);
                         }

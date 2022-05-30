@@ -37,6 +37,9 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.transactions:
                     replaceFragment(new TransactionsFragment());
                     break;
+                case R.id.profile:
+                    replaceFragment(new ProfileFragment());
+                    break;
             }
             return true;
         });

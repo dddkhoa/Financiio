@@ -4,13 +4,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +25,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,24 +33,29 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
+import java.util.Calendar;
 import java.util.Locale;
 
+
+
+
 public class TransactionsFragment extends Fragment {
-    public int[] categoryImages = {R.drawable.ic_salary, R.drawable.ic_saving, R.drawable.ic_other_income, R.drawable.ic_accessory,
-            R.drawable.ic_book, R.drawable.ic_transport, R.drawable.ic_clothes, R.drawable.ic_drink, R.drawable.ic_computer,
-            R.drawable.ic_cosmetic, R.drawable.ic_electric, R.drawable.ic_entertainmmment,
+    public int[] categoryImages = {R.drawable.ic_salary,  R.drawable.ic_saving, R.drawable.ic_other_income, R.drawable.ic_accessory,
+            R.drawable.ic_book, R.drawable.ic_clothes, R.drawable.ic_computer,
+            R.drawable.ic_cosmetic, R.drawable.ic_drink, R.drawable.ic_electric, R.drawable.ic_entertainmmment,
             R.drawable.ic_fitness, R.drawable.ic_food, R.drawable.ic_fuel, R.drawable.ic_gift, R.drawable.ic_grocery,
             R.drawable.ic_laundry, R.drawable.ic_loan, R.drawable.ic_medical,
-            R.drawable.ic_phone, R.drawable.ic_rental,
-            R.drawable.ic_shopping, R.drawable.ic_water, R.drawable.ic_other};
+            R.drawable.ic_phone,  R.drawable.ic_rental,
+            R.drawable.ic_shopping, R.drawable.ic_transport, R.drawable.ic_water,R.drawable.ic_other};
 
     FirebaseDatabase database;
     DatabaseReference inputRef, moneyRef;
     FirebaseAuth mAuth;
     ValueEventListener listener;
 
+    SearchView searchView;
     RecyclerView transactionsRecyclerView;
-    FirebaseRecyclerAdapter<Input, MyViewHolder> adapter;
+    FirebaseRecyclerAdapter<Input, MyViewHolder> adapter, cateFilterAdapter;
 
     String post_key = "";
     String myCategoryName = "";
@@ -68,11 +72,13 @@ public class TransactionsFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_transactions, container, false);
+        searchView = rootView.findViewById(R.id.searchView);
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -84,7 +90,7 @@ public class TransactionsFragment extends Fragment {
         transactionsRecyclerView.setHasFixedSize(true);
         transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        Query query = inputRef.orderByChild("date");
+        Query query = inputRef.orderByChild("invertedDateInMilliseconds");
 
         FirebaseRecyclerOptions<Input> options = new FirebaseRecyclerOptions.Builder<Input>()
                 .setQuery(query, Input.class)
@@ -123,7 +129,180 @@ public class TransactionsFragment extends Fragment {
                         holder.categoryImage.setImageResource(R.drawable.ic_book);
                         break;
                     case "Clothes":
+                        holder.categoryImage.setImageResource(R.drawable.ic_clothes);
+                        break;
+                    case "Computer Bill":
+                        holder.categoryImage.setImageResource(R.drawable.ic_computer);
+                        break;
+                    case "Cosmetic":
+                        holder.categoryImage.setImageResource(R.drawable.ic_cosmetic);
+                        break;
+                    case "Drink":
+                        holder.categoryImage.setImageResource(R.drawable.ic_drink);
+                        break;
+                    case "Electricity Bill":
+                        holder.categoryImage.setImageResource(R.drawable.ic_electric);
+                        break;
+                    case "Entertainment Bill":
+                        holder.categoryImage.setImageResource(R.drawable.ic_entertainmmment);
+                        break;
+                    case "Fitness":
+                        holder.categoryImage.setImageResource(R.drawable.ic_fitness);
+                        break;
+                    case "Food":
+                        holder.categoryImage.setImageResource(R.drawable.ic_food);
+                        break;
+                    case "Gift":
+                        holder.categoryImage.setImageResource(R.drawable.ic_gift);
+                        break;
+                    case "Grocery":
+                        holder.categoryImage.setImageResource(R.drawable.ic_grocery);
+                        break;
+                    case "Laundry":
+                        holder.categoryImage.setImageResource(R.drawable.ic_laundry);
+                        break;
+                    case "Loan":
+                        holder.categoryImage.setImageResource(R.drawable.ic_loan);
+                        break;
+                    case "Medical":
+                        holder.categoryImage.setImageResource(R.drawable.ic_medical);
+                        break;
+                    case "Phone Bill":
+                        holder.categoryImage.setImageResource(R.drawable.ic_phone);
+                        break;
+                    case "Rental Bill":
+                        holder.categoryImage.setImageResource(R.drawable.ic_rental);
+                        break;
+                    case "Shopping Bill":
+                        holder.categoryImage.setImageResource(R.drawable.ic_shopping);
+                        break;
+                    case "Transportation":
                         holder.categoryImage.setImageResource(R.drawable.ic_transport);
+                        break;
+                    case "Water Bill":
+                        holder.categoryImage.setImageResource(R.drawable.ic_water);
+                        break;
+                    case "Other Bill":
+                        holder.categoryImage.setImageResource(R.drawable.ic_other);
+                        break;
+                    default:
+                        holder.categoryImage.setImageResource(R.drawable.ic_accessory);
+                        break;
+                }
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        post_key = getRef(holder.getAbsoluteAdapterPosition()).getKey();
+                        myCategoryName = model.getCategoryName();
+                        myMoneyInput = model.getMoneyInput();
+                        myNoteText = model.getNoteText();
+
+                        myCategoryImage = model.getCategoryImage();
+                        myDate = model.getDate();
+                        updateData();
+                    }
+                });
+            }
+
+            @NonNull
+            @Override
+            public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+                View view = inflater.inflate(R.layout.transaction_recycler_view_row, parent, false);
+                return new MyViewHolder(view);
+            }
+        };
+
+        transactionsRecyclerView.setAdapter(adapter);
+        adapter.startListening();
+        adapter.notifyDataSetChanged();
+
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                TransactionsFragment.walletTotal = 0;
+                for (DataSnapshot snap: snapshot.getChildren()) {
+                    Input input = snap.getValue(Input.class);
+                    if (input.getCategoryName().equals("Salary") | input.getCategoryName().equals("Saving") | input.getCategoryName().equals("Other Income")) {
+                        TransactionsFragment.walletTotal += input.getMoneyInput();
+                    } else {
+                        TransactionsFragment.walletTotal -= input.getMoneyInput();
+                    }
+                }
+                walletTotalText.setText(String.format(Locale.getDefault(), "%,.1f", TransactionsFragment.walletTotal) + " VND");
+                moneyRef.setValue(TransactionsFragment.walletTotal);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        inputRef.addValueEventListener(listener);
+
+        // Search for a spending category
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
+
+        return rootView;
+    }
+
+    private void filter(String query) {
+        Query cateRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(mAuth.getCurrentUser().getUid()).child("Transactions").orderByChild("categoryName")
+                .startAt(query).endAt(query+"\uf8ff");
+
+        FirebaseRecyclerOptions<Input> searchCateOptions = new FirebaseRecyclerOptions.Builder<Input>()
+                .setQuery(cateRef, Input.class).build();
+
+        cateFilterAdapter = new FirebaseRecyclerAdapter<Input, MyViewHolder>(searchCateOptions) {
+            @Override
+            protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Input model) {
+                holder.setCategoryName(model.getCategoryName());
+                holder.setDatePicker(model.getDate());
+                holder.setMoneyInput(model.getMoneyInput());
+                holder.setNoteText(model.getNoteText());
+
+                if (model.getCategoryName() != null) {
+                    if (model.getCategoryName().equals("Salary") | model.getCategoryName().equals("Saving") | model.getCategoryName().equals("Other Income")) {
+                        holder.moneyInput.setTextColor(getResources().getColor(R.color.GREEN));
+                    } else {
+                        holder.moneyInput.setTextColor(getResources().getColor(R.color.RED));
+                    }
+                }
+
+                switch (model.getCategoryName()) {
+                    case "Salary":
+                        holder.categoryImage.setImageResource(R.drawable.ic_salary);
+                        break;
+                    case "Saving":
+                        holder.categoryImage.setImageResource(R.drawable.ic_saving);
+                        break;
+                    case "Other Income":
+                        holder.categoryImage.setImageResource(R.drawable.ic_other_income);
+                        break;
+                    case "Accessory":
+                        holder.categoryImage.setImageResource(R.drawable.ic_accessory);
+                        break;
+                    case "Book":
+                        holder.categoryImage.setImageResource(R.drawable.ic_book);
+                        break;
+                    case "Clothes":
+                        holder.categoryImage.setImageResource(R.drawable.ic_clothes);
                         break;
                     case "Computer Bill":
                         holder.categoryImage.setImageResource(R.drawable.ic_computer);
@@ -210,34 +389,15 @@ public class TransactionsFragment extends Fragment {
             }
         };
 
-        transactionsRecyclerView.setAdapter(adapter);
-        adapter.startListening();
-        adapter.notifyDataSetChanged();
-
-        listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                TransactionsFragment.walletTotal = 0;
-                for (DataSnapshot snap: snapshot.getChildren()) {
-                    Input input = snap.getValue(Input.class);
-                    if (input.getCategoryName().equals("Salary") | input.getCategoryName().equals("Saving") | input.getCategoryName().equals("Other Income")) {
-                        TransactionsFragment.walletTotal += input.getMoneyInput();
-                    } else {
-                        TransactionsFragment.walletTotal -= input.getMoneyInput();
-                    }
-                }
-                walletTotalText.setText(String.format(Locale.getDefault(), "%,.1f", TransactionsFragment.walletTotal) + " VND");
-                moneyRef.setValue(TransactionsFragment.walletTotal);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-
-        inputRef.addValueEventListener(listener);
-        return rootView;
+        if (query.length() == 0) {
+            transactionsRecyclerView.setAdapter(adapter);
+            adapter.startListening();
+            adapter.notifyDataSetChanged();
+        } else {
+            transactionsRecyclerView.setAdapter(cateFilterAdapter);
+            cateFilterAdapter.startListening();
+            cateFilterAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -335,6 +495,15 @@ public class TransactionsFragment extends Fragment {
                     String stringMoneyInput = moneyInput.getText().toString();
                     String date = datePicker.getText().toString();
                     String category = categoryName.getText().toString();
+                    String[] tempDate = date.split("-");
+                    int day = Integer.parseInt(tempDate[0]);
+                    int month = Integer.parseInt(tempDate[1]);
+                    int year = Integer.parseInt(tempDate[2]);
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.DAY_OF_MONTH, day);
+                    cal.set(Calendar.MONTH, month);
+                    cal.set(Calendar.YEAR, year);
+                    long dateInMilliseconds = cal.getTimeInMillis();
 
                     Input userInput;
 
@@ -342,9 +511,9 @@ public class TransactionsFragment extends Fragment {
                         double moneyInput = Double.parseDouble(stringMoneyInput);
                         if (noteText.getText() != null) {
                             String note = noteText.getText().toString();
-                            userInput = new Input(moneyInput, category, note, date);
+                            userInput = new Input(moneyInput, category, note, date, day, month, year, dateInMilliseconds);
                         } else {
-                            userInput = new Input(moneyInput, category, null, date);
+                            userInput = new Input(moneyInput, category, null, date, day, month, year, dateInMilliseconds);
                         }
 
                         inputRef.child(post_key).setValue(userInput).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -411,3 +580,4 @@ public class TransactionsFragment extends Fragment {
         dlg.show();
     }
 }
+

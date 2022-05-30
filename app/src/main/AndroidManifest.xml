@@ -12,6 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Financiio">
+
+        <activity
+            android:name=".SelectCategoryForBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateBudgetActivity"
+            android:exported="false" />
         <activity
             android:name=".SelectCategoryActivity"
             android:exported="true" />
@@ -45,6 +52,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".sms.SmsActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

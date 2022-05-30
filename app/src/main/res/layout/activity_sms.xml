@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="fill_parent" android:id="@+id/MainLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".sms.SmsActivity">
+
+
+
+    <Button
+        android:id="@+id/btnTrDetailsOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#0ED6B9"
+        android:text="Extract"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="SMS Inbox"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal" />
+
+    <ListView android:id="@+id/SMSList"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp" />
+
+
+</LinearLayout>

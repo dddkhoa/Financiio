@@ -4,15 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
-public class SelectCategoryActivity extends AppCompatActivity implements CategoryRecyclerViewInterface {
+public class SelectCategoryForBudgetActivity extends AppCompatActivity implements CategoryRecyclerViewInterface {
 
     ArrayList<CategoryModel> categoryModels = new ArrayList<>();
     public int[] categoryImages = {R.drawable.ic_salary,  R.drawable.ic_saving, R.drawable.ic_other_income, R.drawable.ic_accessory,
@@ -36,14 +44,7 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
         setContentView(R.layout.activity_select_category);
 
         TextView selectCategoryText = (TextView) findViewById(R.id.selectCategory);
-        ImageView backBtn = (ImageView) findViewById(R.id.backButton);
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        ImageView backBtn = (ImageView) findViewById(R.id.backButton2);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.category_recycler_view);
 
@@ -61,11 +62,18 @@ public class SelectCategoryActivity extends AppCompatActivity implements Categor
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(SelectCategoryActivity.this, InputActivity.class);
+        Intent intent = new Intent(SelectCategoryForBudgetActivity.this,UpdateBudgetActivity.class);
         CategoryModel currentCategory = categoryModels.get(position);
         intent.putExtra("Category", currentCategory.getCategoryName());
         intent.putExtra("Image", position);
         startActivity(intent);
     }
+
+
+
+
+
+
+
 
 }

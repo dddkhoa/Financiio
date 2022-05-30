@@ -13,32 +13,49 @@
         android:gravity="top">
 
         <TextView
+            android:id="@+id/spendingAmount"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:layout_alignParentStart="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_alignParentStart="true"
-            android:text="100,000 VND"
-            android:textStyle="bold"
-            android:textSize="30sp" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:text="Total balance"
-            android:textSize="20sp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="10dp" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="45dp"
+            android:textColor="@color/black"
+            android:text="Total spending"
+            android:textSize="20sp" />
 
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
+        <TextView
+            android:id="@+id/incomeAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_baseline_notifications_24" />
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:text=""
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/black"
+            android:text="Net income"
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
@@ -47,8 +64,38 @@
         android:layout_height="wrap_content"
         android:text="Report"
         android:textSize="26dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="10dp"
+        android:textColor="@color/black"
         android:textStyle="bold"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:baselineAligned="true">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/spending_piechart"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp" />
+
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/income_piechart"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

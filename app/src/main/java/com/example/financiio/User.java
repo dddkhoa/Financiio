@@ -4,7 +4,7 @@ public class User {
 
 
     public String fullName, email, userID;
-    public double wallet;
+    public double wallet, budget;
 
     public User() {
 
@@ -14,6 +14,7 @@ public class User {
         this.fullName = fullName;
         this.email = email;
         this.wallet = 0;
+        this.budget = 0;
     }
 
     public String getFullName() {
@@ -46,5 +47,13 @@ public class User {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public double getBudget() {
+        return budget;
+    }
+
+    public void setBudget(double budget) {
+        this.budget = budget;
     }
 }
